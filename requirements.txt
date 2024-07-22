@@ -3,3 +3,9 @@ faiss-cpu
 openai
 dotenv
 python-dotenv
+tiktoken
+langchain
+langchain.core
+loguru
+edge_tts
+gradio
