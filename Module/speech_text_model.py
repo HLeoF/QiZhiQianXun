@@ -7,10 +7,8 @@ from openai import OpenAI
 from dotenv import load_dotenv
 import speech_recognition as sr
 from playsound import playsound
-load_dotenv("D:/LLMs Projects/enviroment.env")
 
 recognizer = sr.Recognizer()
-client = OpenAI()
 
 def recognize_speech_from_mic(language='es-ES'):
     with sr.Microphone() as source:
@@ -35,16 +33,3 @@ async def speak_text(text, voice="zh-CN-YunxiNeural"):
     await player.save("output.mp3")
     playsound("output.mp3")
     os.remove("output.mp3")
-
-
-def get_gpt_response(messages):
-    logger.info(messages)
-    messages = [{"role": "user", "content": messages}]
-    response = client.chat.completions.create(
-        messages=messages,
-        model="gpt-3.5-turbo",
-        max_tokens=1000,
-        stream=False,
-        temperature=0.7,
-    )
-    return response.choices[0].message.content

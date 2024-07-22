@@ -11,3 +11,4 @@ edge_tts
 gradio
 SpeechRecognition
 playsound==1.2.2
+qdrant-client

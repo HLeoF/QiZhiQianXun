@@ -45,11 +45,10 @@ VOICE_MODEL = [
     "zh-HK-WanLungNeural"
     "zh-CN-XiaoxiaoNeural",
     "zh-CN-YunxiNeural",
-    "zh-CN-liaoning-XiaobeiNeural",
     "en-US-AriaNeural",
     "en-US-GuyNeural",
     "es-ES-ElviraNeural",
     "es-ES-AlvaroNeural",
 ]
 
-DEFAULT_VOICE_MODEL = VOICE_MODEL[1]
+DEFAULT_VOICE_MODEL = VOICE_MODEL[3]
