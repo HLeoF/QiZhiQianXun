@@ -1,7 +1,11 @@
+from ast import Store
 from langchain_community.chat_models import ChatOllama
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
-
+from langchain_core.chat_history import BaseChatMessageHistory
+from langchain_core.runnables.history import RunnableWithMessageHistory
+from langchain_community.chat_message_histories import ChatMessageHistory
+store = {}
 
 class ollama:
     def __init__(self, model, max_tokens=1000, temperature=0.7):
@@ -11,18 +15,21 @@ class ollama:
             temperature = temperature,
         )
     
-    def get_response(self, messages, stream=False):
+    def get_session_history(session_id:str) -> BaseChatMessageHistory:
+        if session_id not in store:
+            store[session_id] = ChatMessageHistory()
+        return store[session_id]
+            
+    
+    def get_response(self, messages, config, history, stream=False):
         prompt = ChatPromptTemplate.from_template(
-            """你是一个诗人，可以根据用户的要求写诗。请根据以下规则来作诗：
-                1. 如果用户的要求中没有提到 "风格"，请告诉用户你不能写。
-                2. 如果用户提到的诗人不是中国/中国古时候的朝代的诗人，或者诗人来自其他国家，请推荐一个中国诗人。
-                3. 诗的格式只能是4句话。
-
-                用户的要求：{user_request}
+            """
+            {user_request}
             """
         )
         strparser = StrOutputParser()
         chain = prompt | self.client | strparser
+        self.client
         
         
         if stream:
@@ -35,8 +42,18 @@ class ollama:
         
 
 if __name__ == ("__main__"):
-    model = ollama(model='qwen2:7b')
-    user_request = input("写下您的要求：")
-    result = model.get_response(user_request)
-    print(result)
-
+    
+    model = ollama(model='qwen2:latest')
+    with_message_history = RunnableWithMessageHistory(model, model.get_session_history)
+    config = {"configurable":{"seesion_id":'uuid1'}}
+    
+    
+    while True:
+        user_request = input("~:")
+        result = model.get_response(user_request,config, with_message_history, stream=False)
+        for chunk in result:
+            # 如果 chunk 具有 `content` 属性，输出内容
+            if hasattr(chunk, 'content'):
+                print(chunk.content, end="", flush=True)
+            else:
+                print(chunk, end="", flush=True)

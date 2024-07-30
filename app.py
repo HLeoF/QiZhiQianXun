@@ -5,6 +5,7 @@ dir_path = os.path.join(current_dir, 'Module')
 if dir_path not in sys.path:
     sys.path.append(dir_path)
 
+
 from Module.configuration import *
 from Module.UI_function import *
 

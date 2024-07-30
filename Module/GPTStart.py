@@ -31,21 +31,6 @@ class GPTStart:
         logger.info(f"Total Token:{completion.usage.total_tokens}")
         return completion.choices[0].message.content
     
-
-    # Image Module
-    def generate_image(self, prompt, model="dall-e-3", quality="standard", size="1024x1024", style="vivid", n=1, response_format="url"):
-        response = self.client.images.generate(
-            prompt=prompt,
-            model=model,
-            quality=quality,
-            size=size,
-            style=style,
-            n=n,
-            response_format=response_format,
-        )
-
-        logger.info(f"Improved Prompt: {response.data[0].revised_prompt}")
-        return response
     
     def get_embeddings(self, context, model="text-embedding-3-small"):
         response = self.client.embeddings.create(
